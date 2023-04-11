@@ -1,0 +1,138 @@
+local Player = game.Players.LocalPlayer.Name
+
+local screen_gui = Instance.new("ScreenGui")
+screen_gui.IgnoreGuiInset = false
+screen_gui.ResetOnSpawn = true
+screen_gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screen_gui.Parent = game.Players[Player].PlayerGui
+
+local main_frame = Instance.new("Frame")
+main_frame.BackgroundColor3 = Color3.new(0.133333, 0.133333, 0.133333)
+main_frame.BorderSizePixel = 0
+main_frame.Position = UDim2.new(0.294708043, 0, 0.285185218, 0)
+main_frame.Size = UDim2.new(0, 413, 0, 348)
+main_frame.Visible = true
+main_frame.Name = "MainFrame"
+main_frame.Parent = screen_gui
+
+local source = Instance.new("TextBox")
+source.CursorPosition = -1
+source.Font = Enum.Font.SourceSans
+source.Text = ""
+source.TextColor3 = Color3.new(0, 0, 0)
+source.TextSize = 14
+source.TextXAlignment = Enum.TextXAlignment.Left
+source.TextYAlignment = Enum.TextYAlignment.Top
+source.BackgroundColor3 = Color3.new(1, 1, 1)
+source.Position = UDim2.new(0.0266343821, 0, 0.0517241359, 0)
+source.Size = UDim2.new(0, 390, 0, 224)
+source.Visible = true
+source.Name = "Source"
+source.Parent = main_frame
+
+local run = Instance.new("TextButton")
+run.Font = Enum.Font.SourceSans
+run.Text = "Run"
+run.TextColor3 = Color3.new(0, 0, 0)
+run.TextSize = 14
+run.BackgroundColor3 = Color3.new(1, 1, 1)
+run.Position = UDim2.new(0.0266343821, 0, 0.781609058, 0)
+run.Size = UDim2.new(0, 125, 0, 50)
+run.Visible = true
+run.Name = "run"
+run.Parent = main_frame
+
+local clear = Instance.new("TextButton")
+clear.Font = Enum.Font.SourceSans
+clear.Text = "Clear"
+clear.TextColor3 = Color3.new(0, 0, 0)
+clear.TextSize = 14
+clear.BackgroundColor3 = Color3.new(1, 1, 1)
+clear.Position = UDim2.new(0.392251819, 0, 0.781609058, 0)
+clear.Size = UDim2.new(0, 125, 0, 50)
+clear.Visible = true
+clear.Name = "clear"
+clear.Parent = main_frame
+
+local script = Instance.new("Script")
+script.Parent = clear
+
+local script_2 = Instance.new("Script")
+script_2.Parent = main_frame
+
+local drag = Instance.new("LocalScript")
+drag.Name = "drag"
+drag.Parent = main_frame
+
+--//Modules
+
+local modules = {}
+
+--// Scripts
+
+-- Script
+task.spawn(function()
+	local script = script
+
+	local oldreq = require
+	local function require(target)
+		if modules[target] then
+			return modules[target]()
+		end
+		return oldreq(target)
+	end
+
+	script.Parent.MouseButton1Click:Connect(function()
+		script.Parent.Parent.Source.Text = ""
+	end)
+end)
+
+-- Script
+task.spawn(function()
+	local script = script_2
+
+	local oldreq = require
+	local function require(target)
+		if modules[target] then
+			return modules[target]()
+		end
+		return oldreq(target)
+	end
+
+	script.Parent.run.MouseButton1Click:Connect(function()
+		local code = script.Parent.Source.Text
+	
+		local PlaceId = game.PlaceId
+	
+		local Data = {
+			placeid=PlaceId,
+			code=code
+		}
+	
+		syn.request({
+			Url="https://executionbot-1.typicalexploits.repl.co/code",
+			Method="POST",
+			Headers={
+				["Content-Type"]="application/json"
+			},
+			Body=game:GetService("HttpService"):JSONEncode(Data)
+		})
+	end)
+	
+end)
+
+-- drag
+task.spawn(function()
+	local script = drag
+
+	local oldreq = require
+	local function require(target)
+		if modules[target] then
+			return modules[target]()
+		end
+		return oldreq(target)
+	end
+
+	
+	local a=game:GetService("UserInputService")function drag(b)dragToggle=nil dragSpeed=0.23 dragInput=nil dragStart=nil dragPos=nil function updateInput(a)Delta=a.Position-dragStart Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+Delta.X,startPos.Y.Scale,startPos.Y.Offset+Delta.Y)game:GetService("TweenService"):Create(b,TweenInfo.new(0.25),{Position=Position}):Play()end b.InputBegan:Connect(function(c)if(c.UserInputType==Enum.UserInputType.MouseButton1 or c.UserInputType==Enum.UserInputType.Touch)and a:GetFocusedTextBox()==nil then dragToggle=true dragStart=c.Position startPos=b.Position c.Changed:Connect(function()if c.UserInputState==Enum.UserInputState.End then dragToggle=false end end)end end)b.InputChanged:Connect(function(a)if a.UserInputType==Enum.UserInputType.MouseMovement or a.UserInputType==Enum.UserInputType.Touch then dragInput=a end end)game:GetService("UserInputService").InputChanged:Connect(function(a)if a==dragInput and dragToggle then updateInput(a)end end)end drag(script.Parent)
+end)
