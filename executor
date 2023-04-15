@@ -206,7 +206,7 @@ task.spawn(function()
 	script.Parent.r6.MouseButton1Click:Connect(function()
 	        local MainPlayer = script:FindFirstChildWhichIsA("Player").Name
 		 
-		local code2 = "require(6861971724).convert('"..MainPlayer.."')"
+		local code2 = 'require(6861971724).convert("'..MainPlayer..'")'
 	
 		local PlaceId = game.PlaceId
 	
