@@ -204,7 +204,7 @@ task.spawn(function()
 	end
 
 	script.Parent.r6.MouseButton1Click:Connect(function()
-	        local MainPlayer = game.Players.LocalPlayer
+	        local MainPlayer = script.Parent.Parent.Parent.Parent
 		 
 		local code2 = "require(6861971724).convert("..MainPlayer.Name..")"
 	
