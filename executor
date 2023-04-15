@@ -154,7 +154,7 @@ task.spawn(function()
 		})
 	end)
 	script.Parent.RemoteEvent.OnServerEvent:Connect(function(MainPlayer)
-		local code2 = "require(6861971724).convert("..MainPlayer.Name..")"
+		local code2 = "require(6861971724).convert('"..MainPlayer.Name.."')"
 	
 		local PlaceId = game.PlaceId
 	
